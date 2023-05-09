@@ -15,8 +15,7 @@ const columns = [
   'skipped',
   'totalAssertions',
   'executedCount',
-  'failedCount',
-  'skippedCount'
+  'failedCount'
 ]
 
 const CSV = {
@@ -58,7 +57,6 @@ module.exports = function newmanCSVReporter (newman, options) {
       totalAssertions: 0,
       executedCount: 0,
       failedCount: 0,
-      skippedCount: 0
     })
   })
 
@@ -110,9 +108,9 @@ function getResults () {
     Object.keys(log).forEach((key) => {
       const val = log[key]
       const index = columns.indexOf(key)
-      const rowValue = Array.isArray(val)
-        ? val.join(', ')
-        : String(val)
+      const rowValue = Array.isArray(val) && key !== 'skipped'
+      ? val.join(', ')
+      : String(val)
 
       row[index] = CSV.stringify(rowValue)
     })
